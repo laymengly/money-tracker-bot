@@ -1,0 +1,11 @@
+.venv
+__pycache__
+*.pyc
+*.pyo
+.git
+.gitignore
+.env
+firebase-debug.log
+firebase-debug.*.log
+.firebase
+
