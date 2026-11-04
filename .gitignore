@@ -10,6 +10,8 @@ ENV/
 
 # Environment and secrets
 .env
+.env.local
+.env.*.local
 serviceAccountKey.json
 *.pem
 *.key
@@ -26,8 +28,13 @@ firebase-debug.*.log
 *.swp
 *.swo
 
+# Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.tsbuildinfo
+
 # Testing & Coverage
 .coverage
 htmlcov/
 .pytest_cache/
-

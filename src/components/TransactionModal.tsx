@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CustomCategories, Language, Transaction, TransactionType } from '../types';
 import { CATEGORIES, I18N } from '../constants';
 import { formatLocalDateTime, getDisplayCategory, triggerHaptic } from '../utils';
+import { APP_CONFIG } from '../config';
 
 interface TransactionModalProps {
   isOpen: boolean;
@@ -93,7 +94,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
       category,
       amount: parsedAmount,
       currency,
-      wallet: 'Bank',
+      wallet: APP_CONFIG.defaultWallet,
       note: note.trim(),
       date: txDate,
     });

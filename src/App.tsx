@@ -25,8 +25,7 @@ import { TransactionList } from './components/TransactionList';
 import { TransactionModal } from './components/TransactionModal';
 import { CategoryModal } from './components/CategoryModal';
 import { PeriodModal } from './components/PeriodModal';
-import { SettingsModal } from './components/SettingsModal';
-import config from '../firebase-applet-config.json';
+import { APP_CONFIG } from './config';
 
 export function App() {
   // Localization
@@ -35,30 +34,10 @@ export function App() {
     return saved === 'km' ? 'km' : 'en';
   });
 
-  // User & Configuration state
+  // User & Configuration state (Configured directly in code via APP_CONFIG)
   const [userName, setUserName] = useState('Financial Assistant');
   const [userAvatar, setUserAvatar] = useState('👤');
-  const [userCurrency, setUserCurrency] = useState<string>(() => {
-    return (
-      localStorage.getItem('app_currency') ||
-      (import.meta.env.VITE_DEFAULT_CURRENCY as string) ||
-      'USD'
-    );
-  });
-  const [defaultWallet, setDefaultWallet] = useState<string>(() => {
-    return (
-      localStorage.getItem('app_default_wallet') ||
-      (import.meta.env.VITE_DEFAULT_WALLET as string) ||
-      'Bank'
-    );
-  });
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-
-  // Configuration variables
-  const firebaseProjectId =
-    (import.meta.env.VITE_FIREBASE_PROJECT_ID as string) || config.projectId;
-  const firestoreDatabaseId =
-    (import.meta.env.VITE_FIREBASE_DATABASE_ID as string) || config.firestoreDatabaseId;
+  const userCurrency = APP_CONFIG.defaultCurrency;
 
   // Network state
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
@@ -338,37 +317,6 @@ export function App() {
     showToast(t.toast_deleted);
   };
 
-  // Change currency configuration
-  const handleSelectCurrency = (newCurr: string) => {
-    setUserCurrency(newCurr);
-    localStorage.setItem('app_currency', newCurr);
-    showToast(`Currency changed to ${newCurr}`);
-  };
-
-  // Change default wallet configuration
-  const handleSelectWallet = (newWallet: string) => {
-    setDefaultWallet(newWallet);
-    localStorage.setItem('app_default_wallet', newWallet);
-    showToast(`Default wallet set to ${newWallet}`);
-  };
-
-  // Force full sync to Firestore
-  const handleForceSync = () => {
-    if (!userId) {
-      showToast('⚡ Connecting to Firebase...');
-      return;
-    }
-    syncUnsyncedBatch(userId, transactions)
-      .then(() => {
-        setTransactions((prev) => prev.map((tx) => ({ ...tx, synced: true })));
-        showToast('✓ All records synchronized to Firestore');
-      })
-      .catch((err) => {
-        console.error('Force sync error:', err);
-        showToast('⚠️ Sync error. Please check connection.');
-      });
-  };
-
   // Filter transactions by selected period
   const periodTransactions = filterTransactionsByPeriod(
     transactions,
@@ -407,18 +355,6 @@ export function App() {
             </div>
           </div>
           <div className="header-actions">
-            <button
-              className="btn-settings-icon"
-              type="button"
-              aria-label="Configuration & Settings"
-              title="Configuration & Settings"
-              onClick={() => {
-                triggerHaptic('light');
-                setIsSettingsModalOpen(true);
-              }}
-            >
-              ⚙️
-            </button>
             <button
               className="lang-switch-btn"
               type="button"
@@ -550,25 +486,6 @@ export function App() {
         onShowDateError={() => showToast(t.toast_date_err)}
       />
 
-      {/* Settings & Configuration Modal */}
-      <SettingsModal
-        isOpen={isSettingsModalOpen}
-        onClose={() => setIsSettingsModalOpen(false)}
-        lang={lang}
-        onSelectLang={(newLang) => {
-          setLang(newLang);
-          localStorage.setItem('app_lang', newLang);
-        }}
-        currency={userCurrency}
-        onSelectCurrency={handleSelectCurrency}
-        defaultWallet={defaultWallet}
-        onSelectWallet={handleSelectWallet}
-        firebaseProjectId={firebaseProjectId}
-        firestoreDatabaseId={firestoreDatabaseId}
-        userId={userId}
-        isOnline={isOnline}
-        onForceSync={handleForceSync}
-      />
 
       {/* Toast Notification Container */}
       <div className={`toast-container ${toastMessage ? 'show' : ''}`}>{toastMessage}</div>
