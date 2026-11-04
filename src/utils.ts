@@ -43,10 +43,10 @@ export function getPeriodDisplayText(
   lang: Language
 ): string {
   const t = I18N[lang] || I18N.en;
-  if (period === 'week') return `${t.period_badge_week} ▼`;
-  if (period === 'month') return `${t.period_badge_month} ▼`;
-  if (period === 'year') return `${t.period_badge_year} ▼`;
-  if (period === 'all') return `${t.period_badge_all} ▼`;
+  if (period === 'week') return `${t.period_badge_week} `;
+  if (period === 'month') return `${t.period_badge_month} `;
+  if (period === 'year') return `${t.period_badge_year} `;
+  if (period === 'all') return `${t.period_badge_all} `;
   if (period === 'custom') {
     if (startStr && endStr) {
       return `🔍 ${startStr} ~ ${endStr} ▼`;
