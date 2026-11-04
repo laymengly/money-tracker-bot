@@ -190,18 +190,35 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
 
           {/* Amount */}
           <div className="form-group">
-            <label className="form-label">{t.amount}</label>
-            <input
-              className="input-field"
-              type="number"
-              step="0.01"
-              min="0.01"
-              placeholder="0.00"
-              required
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              autoFocus
-            />
+            <label className="form-label">
+              {t.amount} ({currency === 'KHR' || currency === '៛' ? '៛ Khmer Riel' : currency})
+            </label>
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <span
+                style={{
+                  position: 'absolute',
+                  left: '12px',
+                  fontWeight: 700,
+                  fontSize: '15px',
+                  color: currency === 'KHR' || currency === '៛' ? '#38BDF8' : 'var(--hint-color)',
+                  pointerEvents: 'none',
+                }}
+              >
+                {currency === 'KHR' || currency === '៛' ? '៛' : currency === 'USD' ? '$' : currency}
+              </span>
+              <input
+                className="input-field"
+                style={{ paddingLeft: '32px' }}
+                type="number"
+                step={currency === 'KHR' || currency === '៛' ? '100' : '0.01'}
+                min="0.01"
+                placeholder={currency === 'KHR' || currency === '៛' ? '10000' : '0.00'}
+                required
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                autoFocus
+              />
+            </div>
           </div>
 
           {/* Category */}
