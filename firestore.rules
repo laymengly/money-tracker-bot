@@ -2,14 +2,18 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     // Money Tracker Bot & Mini App Security Rules
-    // Tenant isolation: Users can only read and write their own documents
+    // Tenant isolation: Authenticated users can only read and write their own records
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
 
-      // User transactions subcollection
-      match /transactions/{transactionId} {
+      match /{allSubcollections=**} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
       }
+    }
+
+    // Allow connection health-check verification
+    match /test/connection {
+      allow read: if true;
     }
 
     // Deny all other access by default
@@ -18,4 +22,3 @@ service cloud.firestore {
     }
   }
 }
-

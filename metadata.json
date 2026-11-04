@@ -1,0 +1,7 @@
+{
+  "name": "Money Tracker & Financial Assistant",
+  "description": "Offline-first personal finance tracker with interactive category charts, net balance analysis, multi-period filtering, and bilingual English & Khmer support.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

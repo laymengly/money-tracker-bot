@@ -1,8 +1,0 @@
-python-telegram-bot[job-queue]>=20.7
-firebase-admin>=6.4.0
-firebase-functions>=0.6.0
-matplotlib>=3.8.0
-python-dotenv>=1.0.1
-fastapi>=0.110.0
-uvicorn>=0.28.0
-pydantic>=2.6.0

@@ -1,0 +1,45 @@
+{
+  "entities": {
+    "Transaction": {
+      "title": "Transaction",
+      "description": "A financial transaction record representing an expense or income entry",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["expense", "income"] },
+        "category": { "type": "string" },
+        "amount": { "type": "number" },
+        "currency": { "type": "string" },
+        "wallet": { "type": "string" },
+        "note": { "type": "string" },
+        "date": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "type", "category", "amount", "currency", "date"]
+    },
+    "UserSettings": {
+      "title": "UserSettings",
+      "description": "User preferences including custom categories, currency, and language",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "customCategories": { "type": "object" },
+        "language": { "type": "string" },
+        "currency": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "User transactions subcollection isolated per user"
+    },
+    "/users/{userId}/settings/preferences": {
+      "schema": "UserSettings",
+      "description": "User settings, preferences, and custom category lists"
+    }
+  }
+}
