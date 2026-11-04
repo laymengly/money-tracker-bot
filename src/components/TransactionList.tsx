@@ -175,7 +175,7 @@ const SwipeableTransactionItem: React.FC<SwipeableItemProps> = ({
         <div className="tx-right">
           <span className={`tx-amount ${tx.type}`}>
             {prefix}
-            {formatCurrency(tx.amount, tx.currency || currency)}
+            {formatCurrency(Math.abs(tx.amount), tx.currency || currency)}
             <span
               className={`sync-dot ${tx.synced ? 'synced' : 'local'}`}
               title={tx.synced ? t.synced_tag : t.local_tag}

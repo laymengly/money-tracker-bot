@@ -2,16 +2,19 @@ import { PeriodType, Language, Transaction } from './types';
 import { CATEGORY_NAMES_KM, I18N } from './constants';
 
 export function formatCurrency(amount: number, currency = 'USD'): string {
-  const isKhr = currency === 'KHR' || currency === '៛';
   const num = Number(amount) || 0;
+  const isNegative = num < 0;
+  const absVal = Math.abs(num);
+  const sign = isNegative ? '-' : '';
 
+  const isKhr = currency === 'KHR' || currency === '៛';
   if (isKhr) {
     // Khmer Riels format: ៛ symbol with thousands separator
-    const formattedNum = num.toLocaleString('en-US', {
-      minimumFractionDigits: num % 1 === 0 ? 0 : 2,
+    const formattedNum = absVal.toLocaleString('en-US', {
+      minimumFractionDigits: absVal % 1 === 0 ? 0 : 2,
       maximumFractionDigits: 2,
     });
-    return `៛${formattedNum}`;
+    return `${sign}៛${formattedNum}`;
   }
 
   let sym = '$';
@@ -20,12 +23,14 @@ export function formatCurrency(amount: number, currency = 'USD'): string {
   else if (currency === 'THB') sym = '฿';
   else if (currency === 'JPY') sym = '¥';
   else if (currency === 'SGD') sym = 'S$';
-  else if (currency !== 'USD') sym = currency + ' ';
+  else if (currency !== 'USD') sym = currency ? `${currency} ` : '$';
 
-  return `${sym}${num.toLocaleString('en-US', {
+  const formattedNum = absVal.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  })}`;
+  });
+
+  return `${sign}${sym}${formattedNum}`;
 }
 
 export function formatLocalDateTime(date?: Date): string {
@@ -72,7 +77,7 @@ export function getPeriodDisplayText(
     }
     return `${t.period_badge_custom} ▼`;
   }
-  return `${t.period_badge_month} ▼`;
+  return `${t.period_badge_month} `;
 }
 
 export function filterTransactionsByPeriod(

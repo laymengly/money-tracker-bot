@@ -22,3 +22,4 @@ export const APP_CONFIG = {
       (import.meta.env.VITE_FIREBASE_DATABASE_ID as string) || config.firestoreDatabaseId,
   },
 };
+
